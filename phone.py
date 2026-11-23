@@ -1,4 +1,4 @@
-"""Phone remote: use NeonClipping from a phone on the same Wi-Fi.
+"""Phone remote and authenticated hosted access for fastclipping.
 
 The heavy work (recording, speech, rendering) always happens on the PC. The phone is a remote control and viewer:
 paste a live link, watch the chat-hype meter, press "clip the last 20 s", and play / save the clips.
@@ -10,8 +10,12 @@ Safety rules (this opens the tool to your home network, so they are strict):
     tries an address is locked for 10 minutes. A correct PIN gives an HttpOnly cookie.
   * Even with the PIN a phone can only use the live, library, make, status, clips, feedback and creators routes. Uploads,
     file-based tools, the queue and every /phone route stay PC-only.
+  * FASTCLIPPING_WEB=1 enables the full hosted studio with separate username/password authentication on every client,
+    including loopback proxies. It does not use the phone PIN or change the default local-only mode.
 """
 import hmac
+import base64
+import binascii
 import hashlib
 import json
 import os
@@ -40,6 +44,25 @@ def allowed(path):
 
 def lan_enabled():
     return os.environ.get('NEONCLIPPING_LAN') == '1'
+
+
+def web_enabled():
+    """Explicit hosted studio mode, separate from the limited Wi-Fi phone remote."""
+    return os.environ.get('FASTCLIPPING_WEB') == '1'
+
+
+def web_authorized(request, username, password):
+    """Compare both credentials without accepting malformed Authorization headers."""
+    try:
+        scheme, encoded = request.headers.get('authorization', '').split(' ', 1)
+        if scheme.lower() != 'basic':
+            return False
+        supplied_user, supplied_password = base64.b64decode(encoded, validate=True).decode('utf-8').split(':', 1)
+    except (ValueError, UnicodeError, binascii.Error):
+        return False
+    user_ok = hmac.compare_digest(supplied_user.encode('utf-8'), username.encode('utf-8'))
+    password_ok = hmac.compare_digest(supplied_password.encode('utf-8'), password.encode('utf-8'))
+    return user_ok and password_ok
 
 
 def lan_ips():
@@ -98,12 +121,25 @@ def attach(app, data, root):
 
     @app.middleware('http')
     async def gate(request: Request, call_next):
+        # Authenticate even loopback clients: a deployment proxy may appear local.
+        if web_enabled():
+            username = os.environ.get('FASTCLIPPING_WEB_USERNAME', '')
+            password = os.environ.get('FASTCLIPPING_WEB_PASSWORD', '')
+            if not username.strip() or ':' in username or len(password) < 16:
+                return JSONResponse({'detail': 'Hosted access is not configured. Set FASTCLIPPING_WEB_USERNAME and FASTCLIPPING_WEB_PASSWORD (at least 16 characters) on the server.'}, status_code=503)
+            authenticated = web_authorized(request, username, password)
+            if request.method in ('GET', 'HEAD') and request.url.path == '/healthz' and not authenticated:
+                return JSONResponse({'ok': True})
+            if not authenticated:
+                return JSONResponse({'detail': 'Sign in to fastclipping with your studio username and password.'}, status_code=401,
+                                    headers={'WWW-Authenticate': 'Basic realm="fastclipping", charset="UTF-8"', 'Cache-Control': 'no-store'})
+            return await call_next(request)
         host = request.client.host if request.client else ''
         if is_local(host):
             return await call_next(request)
         path = request.url.path
         if not lan_enabled():
-            return JSONResponse({'detail': 'Phone access is off on this computer.'}, status_code=403)
+            return JSONResponse({'detail': 'Remote access is disabled. For a hosted studio, configure FASTCLIPPING_WEB=1 and the studio credentials. For Wi-Fi phone access, use NEONCLIPPING_LAN=1.'}, status_code=403)
         if path in ('/m', '/m/login', '/manifest.webmanifest', '/phone-icon.svg', '/assets/fastclipping-logo.png'):
             return await call_next(request)                 # the page, PIN form and brand image carry no personal data
         if not allowed(path) or path.startswith('/phone'):
