@@ -43,7 +43,7 @@ def build_bundle(data, files, folder):
                       'layout':settings.get('layout'),'caption_style':settings.get('caption_style')}
                 manifest.append(item)
                 copy.append(f"{index:02d}. {title}\nHook: {item['hook']}\nPost caption: {item['post_caption']}\n")
-            archive.writestr('clips.json',json.dumps({'app':'NeonClipping','clips':manifest},ensure_ascii=False,indent=2))
+            archive.writestr('clips.json',json.dumps({'app':'fastclipping','clips':manifest},ensure_ascii=False,indent=2))
             archive.writestr('clips.txt','\n'.join(copy))
     except Exception:
         path.unlink(missing_ok=True);raise
@@ -66,4 +66,4 @@ def attach(app,data):
         if not re.fullmatch('[a-f0-9]{32}',token):raise HTTPException(404)
         path=folder/(token+'.zip')
         if not path.exists():raise HTTPException(404,'Download unavailable. Prepare the bundle again.')
-        return FileResponse(path,media_type='application/zip',filename='NeonClipping-clips.zip')
+        return FileResponse(path,media_type='application/zip',filename='fastclipping-clips.zip')

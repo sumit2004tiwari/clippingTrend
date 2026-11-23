@@ -12,6 +12,8 @@
 !style.css
 !docs/
 !docs/*.jpg
+!docs/brand/
+!docs/brand/*.png
 !docs/*.pdf
 !docs/*.gif
 !docs/guide/

@@ -54,8 +54,8 @@
       hi('यही जानकारी एक फ़ाइल में सेव होती है। इसे आप खुद भेजें (GitHub, Instagram DM, WhatsApp)। जब तक आप शेयर नहीं करते, लॉग आपके कंप्यूटर पर ही रहता है।'),
       dlA),
     card('', '3 · Send directly to the developer (optional)', '3 · सीधे डेवलपर को भेजें (वैकल्पिक)',
-      en('If you want a fix quickly, send the text below straight to me. Only technical details: versions and error messages. No personal data, no videos, no links. Used only to fix NeonClipping. If you prefer not to, use option 1 or 2.'),
-      hi('अगर जल्दी समाधान चाहिए तो नीचे का टेक्स्ट सीधे मुझे भेजें। सिर्फ़ तकनीकी जानकारी: वर्शन और एरर संदेश। कोई निजी डेटा, वीडियो या लिंक नहीं। सिर्फ़ NeonClipping ठीक करने के लिए। नहीं भेजना चाहते तो ऊपर का विकल्प 1 या 2 चुनें।'),
+      en('If you want a fix quickly, send the text below straight to me. Only technical details: versions and error messages. No personal data, no videos, no links. Used only to fix fastclipping. If you prefer not to, use option 1 or 2.'),
+      hi('अगर जल्दी समाधान चाहिए तो नीचे का टेक्स्ट सीधे मुझे भेजें। सिर्फ़ तकनीकी जानकारी: वर्शन और एरर संदेश। कोई निजी डेटा, वीडियो या लिंक नहीं। सिर्फ़ fastclipping ठीक करने के लिए। नहीं भेजना चाहते तो ऊपर का विकल्प 1 या 2 चुनें।'),
       diag,
       el('label', { className: 'rp-c' }, consent, el('span', { textContent: 'I have read this text and allow sending it. / मैंने यह टेक्स्ट पढ़ लिया है और भेजने की अनुमति देता/देती हूँ।' })),
       sendBtn, msg),
@@ -67,7 +67,7 @@
       const r = await fetch('/report/info?note=' + encodeURIComponent(note.value));
       const j = await r.json();
       diag.value = j.diagnostics; issueA.href = j.issue_url;
-      dlA.href = '/report/download?note=' + encodeURIComponent(note.value); dlA.download = 'neonclipping-diagnostics.txt';
+      dlA.href = '/report/download?note=' + encodeURIComponent(note.value); dlA.download = 'fastclipping-diagnostics.txt';
       canSend = !!j.can_send;
       if (!canSend) msg.textContent = 'Direct sending is not set up in this version. Use option 1 or 2. / इस वर्शन में सीधा भेजना चालू नहीं है, विकल्प 1 या 2 चुनें।';
       sendBtn.disabled = !(consent.checked && canSend);

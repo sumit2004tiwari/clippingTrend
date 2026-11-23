@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>NeonClipping · Free AI clip maker for gamers and streamers</title>
-<meta name="description" content="Paste a YouTube, Twitch or Kick link and get captioned 9:16 clips in about two minutes. Free, open-source, runs on your own PC. Hinglish captions, facecam layouts, live clipping.">
-<meta property="og:title" content="NeonClipping: paste a link, get captioned 9:16 clips">
-<meta property="og:description" content="Free and open-source. One-click setup for Windows. Hinglish captions, facecam layouts, live clipping, learns from your star ratings.">
-<meta property="og:type" content="website">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b0912'/%3E%3Ctext x='8' y='46' font-family='Impact,Arial Black' font-size='38' fill='%23ff4ba5'%3EN%3C/text%3E%3Cpath d='M34 40 L52 22 M40 22 H52 V34' stroke='%2358e8f7' stroke-width='5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<title>fastclipping | AI Video Clipper for Shorts &amp; Reels</title>
+
+
+
+
+
 <style>
 :root{--bg:#0b0912;--panel:#161221;--line:#2e2540;--pink:#ff4ba5;--cyan:#58e8f7;--lime:#d4fb58;--orange:#ff8a3d;--white:#fbf6ff;--muted:#a99db7}
 *{box-sizing:border-box}html{scroll-behavior:smooth}
@@ -61,15 +61,32 @@ footer{border-top:1px solid var(--line);padding:30px 0;color:var(--muted);font-s
 .os-note{display:none}
 @media(max-width:820px){.hero .wrap{grid-template-columns:1fr;padding-bottom:90px}.phone{width:200px}.steps,.grid{grid-template-columns:1fr}nav .links a.hide-s{display:none}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+.logo{display:inline-flex;align-items:center;gap:12px}.logo img{display:block;width:48px;height:48px;object-fit:contain}
 </style>
+<meta name="description" content="Turn long videos, podcasts and streams into captioned clips for YouTube Shorts, Instagram Reels and TikTok. Edit locally with fastclipping.">
+<meta property="og:site_name" content="fastclipping">
+<meta property="og:type" content="website">
+<meta property="og:title" content="fastclipping | AI Video Clipper for Shorts &amp; Reels">
+<meta property="og:description" content="Turn long videos, podcasts and streams into captioned clips for YouTube Shorts, Instagram Reels and TikTok. Edit locally with fastclipping.">
+<meta property="og:image" content="brand/fastclipping-logo.png">
+<meta property="og:image:alt" content="fastclipping logo with a play button and editing scissors">
+<meta property="og:image:width" content="1254">
+<meta property="og:image:height" content="1254">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="fastclipping | AI Video Clipper for Shorts &amp; Reels">
+<meta name="twitter:description" content="Turn long videos, podcasts and streams into captioned clips for YouTube Shorts, Instagram Reels and TikTok. Edit locally with fastclipping.">
+<meta name="twitter:image" content="brand/fastclipping-logo.png">
+<meta name="twitter:image:alt" content="fastclipping logo">
+<link rel="icon" type="image/png" sizes="1254x1254" href="brand/fastclipping-logo.png">
+<link rel="apple-touch-icon" href="brand/fastclipping-logo.png">
 </head>
 <body>
 
 <nav><div class="wrap">
-  <a class="logo" href="#">N<b>↗</b> NEONCLIPPING</a>
+  <a class="logo" href="#" aria-label="fastclipping home"><img src="brand/fastclipping-logo.png" alt="" width="48" height="48">fastclipping</a>
   <div class="links">
     <a class="hide-s" href="#how">How it works</a><a class="hide-s" href="#features">Features</a><a class="hide-s" href="#setup">Setup</a><a class="hide-s" href="#faq">FAQ</a>
-    <a class="btn white" style="padding:8px 16px;font-size:13px" href="https://github.com/iamajmeena/neonclipping" target="_blank" rel="noopener">★ Star on GitHub</a>
+
   </div>
 </div></nav>
 
@@ -83,16 +100,16 @@ footer{border-top:1px solid var(--line);padding:30px 0;color:var(--muted);font-s
       <a class="btn ghost" href="#setup">Mac / Linux / AI-agent setup</a>
     </div>
     <div class="fine">One click: download, double-click, done. No account. Your videos never leave your computer.</div>
-    <div class="os-note note" id="mobile-note"><b>You are on a phone.</b> NeonClipping runs on a computer. Open this page on your PC, or <a href="#" id="copy-link">copy this page link</a> and send it to yourself.</div>
+    <div class="os-note note" id="mobile-note"><b>You are on a phone.</b> fastclipping runs on a computer. Open this page on your PC, or <a href="#" id="copy-link">copy this page link</a> and send it to yourself.</div>
   </div>
-  <div class="phone"><video src="demo.mp4" poster="demo-poster.jpg" autoplay loop muted playsinline preload="auto" aria-label="A NeonClipping clip: hook title, captions"></video></div>
+  <div class="phone"><video src="demo.mp4" poster="demo-poster.jpg" autoplay loop muted playsinline preload="auto" aria-label="A fastclipping clip: hook title, captions"></video></div>
 </div></header>
 
 <section id="how"><div class="wrap">
   <h2>Three steps. <em>That's all.</em></h2>
-  <p class="lead">You do not need to know GitHub, Python or any code.</p>
+  <p class="lead">No coding experience needed.</p>
   <div class="steps">
-    <div class="step"><div class="n">1</div><b>Download and double-click</b><p>The setup file checks your PC, installs what is missing and opens NeonClipping in your browser. A shortcut appears on your Desktop.</p></div>
+    <div class="step"><div class="n">1</div><b>Download and double-click</b><p>The setup file checks your PC, installs what is missing and opens fastclipping in your browser. A shortcut appears on your Desktop.</p></div>
     <div class="step"><div class="n">2</div><b>Paste a link</b><p>YouTube, Twitch or Kick. Pick where the webcam is (or draw it). Press <b>Make clips</b>.</p></div>
     <div class="step"><div class="n">3</div><b>Download your clips</b><p>Captioned 9:16 clips appear one by one with a title, a hook and a viral score. Preview, then Download MP4.</p></div>
   </div>
@@ -109,7 +126,7 @@ footer{border-top:1px solid var(--line);padding:30px 0;color:var(--muted);font-s
     <div class="tile"><div class="ic">⭐</div><b>Learns from you</b><p>Rate clips with stars. After a few ratings it re-weights what a good clip means for your taste. Stored only on your PC.</p></div>
     <div class="tile"><div class="ic">🔎</div><b>Finds your facecam</b><p>One click: it looks for the webcam box (a steady border with a face inside) and sets the layout. It ignores the minimap and says so when it is not sure.</p></div>
     <div class="tile"><div class="ic">🎨</div><b>Templates and style</b><p>X post, TikTok hook or Breaking-news frames, padded cards on a blur, colour or image, logo, credit line, outro ribbon, a music bed that rises at the end, six caption animations.</p></div>
-    <div class="tile"><div class="ic">👥</div><b>Creator list</b><p>Add a streamer once. When they go live, NeonClipping records and clips the chat spikes by itself, one stream at a time.</p></div>
+    <div class="tile"><div class="ic">👥</div><b>Creator list</b><p>Add a streamer once. When they go live, fastclipping records and clips the chat spikes by itself, one stream at a time.</p></div>
     <div class="tile"><div class="ic">🤖</div><b>Long streams with a free chatbot</b><p>Splits a 9-hour transcript into small parts with copy-ready prompts, reads the chatbot answers back and downloads only those sections.</p></div>
     <div class="tile"><div class="ic">📱</div><b>Phone remote</b><p>Control live clipping from your phone on the same Wi-Fi: chat-hype meter, clip length, Clip now, play and save clips. PIN protected, off unless you start it.</p></div>
     <div class="tile"><div class="ic">🔒</div><b>Free and private</b><p>Runs locally. No account, no subscription, nothing uploaded, nothing locked. MIT open-source.</p></div>
@@ -127,12 +144,12 @@ footer{border-top:1px solid var(--line);padding:30px 0;color:var(--muted);font-s
   </div>
 
   <div class="pane on" id="p-win">
-    <a class="btn main" href="https://github.com/iamajmeena/neonclipping/releases/latest/download/NeonClipping-Setup.bat">⬇ Download NeonClipping-Setup.bat</a>
+    <a class="btn main" href="https://github.com/iamajmeena/neonclipping/releases/latest/download/NeonClipping-Setup.bat">⬇ Download Windows setup</a>
     <ol>
       <li>Open the downloaded file (double-click). If Windows asks "Windows protected your PC", press <b>More info → Run anyway</b>. The file is plain text and not code-signed; you can open it in Notepad first.</li>
       <li>It checks your PC and installs what is missing (Python, FFmpeg). Needs internet, about 3–8 minutes, no admin rights.</li>
-      <li>It asks two optional questions (GPU libraries, AI titles) and then opens NeonClipping in your browser.</li>
-      <li>Next time just double-click the <b>NeonClipping</b> shortcut on your Desktop.</li>
+      <li>It asks two optional questions (GPU libraries, AI titles) and then opens fastclipping in your browser.</li>
+      <li>Next time just double-click the <b>fastclipping</b> shortcut on your Desktop.</li>
     </ol>
     <div class="note">Everything is installed in one folder (<code>%LOCALAPPDATA%\NeonClipping</code>). Delete it to uninstall.</div>
   </div>
@@ -155,14 +172,14 @@ footer{border-top:1px solid var(--line);padding:30px 0;color:var(--muted);font-s
 cd neonclipping
 ./run.ps1     # Windows
 ./run.sh      # Mac / Linux</pre>
-    <p>Then open <code>http://127.0.0.1:8770</code>. Source, issues and the full README: <a href="https://github.com/iamajmeena/neonclipping" target="_blank" rel="noopener">github.com/iamajmeena/neonclipping</a>.</p>
+    <p>Then open <code>http://127.0.0.1:8770</code>. Your clips and settings stay on this computer.</p>
   </div>
 </div></section>
 
 <section style="background:#100c1b"><div class="wrap">
   <h2>What it <em>looks like</em></h2>
   <p class="lead">One page. Paste, press, download.</p>
-  <img class="shot" src="neonclipping-ui.jpg" alt="NeonClipping showing three finished clips">
+  <img class="shot" src="neonclipping-ui.jpg" alt="fastclipping showing three finished clips">
 </div></section>
 
 <section id="faq"><div class="wrap">
@@ -171,24 +188,24 @@ cd neonclipping
   <details><summary>Does it upload my videos?</summary><p>No. Everything runs on your own computer. Videos, clips and your ratings stay in the app folder. The app only talks to YouTube/Twitch/Kick to fetch the video you paste.</p></details>
   <details><summary>What do I need?</summary><p>A Windows 10/11 PC (a Mac/Linux script exists but is untested) and internet for the first install. An NVIDIA GPU makes some steps faster but is not required.</p></details>
   <details><summary>Does it work on my phone?</summary><p>The tool runs on a computer. This website works on a phone, but the clip maker needs a PC. Using your phone as a remote for the app on your PC (same Wi-Fi) is planned, not built yet.</p></details>
-  <details><summary>Why does Windows show a warning?</summary><p>The setup file is not code-signed (that costs money). It is plain text: right-click → Edit, or open it in Notepad, and read every line. The app itself is fully open-source on GitHub.</p></details>
+  <details><summary>Why does Windows show a warning?</summary><p>The setup file is not code-signed (that costs money). It is plain text: right-click → Edit, or open it in Notepad, and read every line. The app itself is fully open-source.</p></details>
   <details><summary>How good are the picked moments?</summary><p>It finds loud, energetic, quotable moments with fast action. It is a heuristic plus a small local AI, not magic: always watch a clip before posting. Your star ratings make it better at your taste.</p></details>
-  <details><summary>How do I uninstall?</summary><p>Delete the NeonClipping folder in <code>%LOCALAPPDATA%</code> and the Desktop shortcut. Nothing else is changed on your PC (Python and FFmpeg stay if you had them).</p></details>
+  <details><summary>How do I uninstall?</summary><p>Delete the fastclipping folder in <code>%LOCALAPPDATA%</code> and the Desktop shortcut. Nothing else is changed on your PC (Python and FFmpeg stay if you had them).</p></details>
 </div></section>
 
 <section><div class="wrap">
   <div class="support">
     <h2>Liked it? <em>Help it grow.</em></h2>
-    <p style="max-width:620px;margin:0 auto 6px">NeonClipping is free and made by one person. A GitHub star tells me it is useful and helps me keep improving it: faster clips, smarter picks, more languages.</p>
+    <p style="max-width:620px;margin:0 auto 6px">fastclipping is free. Follow our Instagram for updates, tips and new features.</p>
     <div class="cta">
-      <a class="btn white" href="https://github.com/iamajmeena/neonclipping" target="_blank" rel="noopener">★ Star on GitHub</a>
-      <a class="btn pink" href="https://www.instagram.com/iamajmeena/" target="_blank" rel="noopener">Follow @iamajmeena</a>
-      <a class="btn ghost" href="https://rzp.io/rzp/JN41CpW" target="_blank" rel="noopener">♥ Optional donate (UPI / cards)</a>
+
+      <a class="btn pink" href="https://www.instagram.com/iam_sumittiwari/" target="_blank" rel="noopener">Follow @iam_sumittiwari</a>
+      <a class="btn ghost" href="https://rzp.io/rzp/clipping" target="_blank" rel="noopener">♥ Optional donate (UPI / cards)</a>
     </div>
   </div>
 </div></section>
 
-<footer><div class="wrap">Made by <b>Ajay K Meena</b> · MIT licence · <a href="https://github.com/iamajmeena/neonclipping" target="_blank" rel="noopener">GitHub</a> · <a href="NeonClipping-Guide-EN-HI.pdf" target="_blank" rel="noopener">Guide (PDF)</a></div></footer>
+<footer><div class="wrap">Made by <b>Ajay K Meena</b> · MIT licence · <a href="NeonClipping-Guide-EN-HI.pdf" target="_blank" rel="noopener">Guide (PDF)</a></div></footer>
 
 <script>
 (function(){

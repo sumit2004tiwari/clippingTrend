@@ -87,7 +87,7 @@ class Diagnostics(unittest.TestCase):
         self.assertIn('yt_dlp:', text)
         self.assertNotIn('Meena', text)
         self.assertNotIn('QWERTY12345', text)
-        self.assertTrue(text.startswith('NeonClipping diagnostics'))
+        self.assertTrue(text.startswith('fastclipping diagnostics'))
 
     def test_issue_url_fits_in_a_link(self):
         for _ in range(20):
@@ -134,7 +134,7 @@ class Send(unittest.TestCase):
             ok, msg = report.send('please help https://youtu.be/ZZZZZZZZZZZ')
         self.assertTrue(ok, msg)
         body = Collector.got[0]
-        self.assertTrue(body['text'].startswith('NeonClipping diagnostics'))
+        self.assertTrue(body['text'].startswith('fastclipping diagnostics'))
         self.assertNotIn('ZZZZZZZZZZZ', json.dumps(body))
         self.assertEqual(set(body), {'text', 'sent', 'kinds'})
         self.assertIn('youtube-bot-check', body['kinds'])
@@ -167,15 +167,15 @@ class Endpoints(unittest.TestCase):
         self.assertFalse(j['can_send'] and not report.report_url())
         r = self.c.get('/report/download')
         self.assertIn('attachment', r.headers['content-disposition'])
-        self.assertTrue(r.text.startswith('NeonClipping diagnostics'))
+        self.assertTrue(r.text.startswith('fastclipping diagnostics'))
 
     def test_send_requires_explicit_consent(self):
         self.assertEqual(self.c.post('/report/send', json={}).status_code, 400)
         self.assertEqual(self.c.post('/report/send', json={'consent': 'yes'}).status_code, 400)
 
-    def test_script_is_served_and_linked(self):
+    def test_script_is_served_but_not_loaded_in_the_studio(self):
         self.assertEqual(self.c.get('/assets/report.js').status_code, 200)
-        self.assertIn('/assets/report.js', self.c.get('/').text)
+        self.assertNotIn('/assets/report.js', self.c.get('/').text)
 
 
 if __name__ == '__main__':

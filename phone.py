@@ -21,7 +21,7 @@ import time
 from pathlib import Path
 
 from fastapi import HTTPException, Request
-from fastapi.responses import HTMLResponse, JSONResponse, Response
+from fastapi.responses import HTMLResponse, JSONResponse, FileResponse
 
 LOCAL = ('127.0.0.1', '::1', 'localhost')
 ALLOW = ('/m', '/manifest.webmanifest', '/phone-icon.svg', '/live', '/live-active', '/library', '/media', '/text', '/make', '/status',
@@ -104,8 +104,8 @@ def attach(app, data, root):
         path = request.url.path
         if not lan_enabled():
             return JSONResponse({'detail': 'Phone access is off on this computer.'}, status_code=403)
-        if path in ('/m', '/m/login', '/manifest.webmanifest', '/phone-icon.svg'):
-            return await call_next(request)                 # the page itself and the PIN form carry no data
+        if path in ('/m', '/m/login', '/manifest.webmanifest', '/phone-icon.svg', '/assets/fastclipping-logo.png'):
+            return await call_next(request)                 # the page, PIN form and brand image carry no personal data
         if not allowed(path) or path.startswith('/phone'):
             return JSONResponse({'detail': 'This is only available on the PC.'}, status_code=403)
         if not authed(request):
@@ -151,14 +151,13 @@ def attach(app, data, root):
 
     @app.get('/manifest.webmanifest')
     def manifest():
-        return JSONResponse({'name': 'NeonClipping', 'short_name': 'NeonClip', 'start_url': '/m', 'scope': '/', 'display': 'standalone',
+        return JSONResponse({'name': 'fastclipping', 'short_name': 'fastclipping', 'start_url': '/m', 'scope': '/', 'display': 'standalone',
+                             'description': 'Control your local video clipping studio, review highlights and save captioned clips.',
                              'background_color': '#0b0912', 'theme_color': '#0b0912',
-                             'icons': [{'src': '/phone-icon.svg', 'sizes': 'any', 'type': 'image/svg+xml', 'purpose': 'any'}]},
+                             'icons': [{'src': '/assets/fastclipping-logo.png', 'sizes': '1254x1254', 'type': 'image/png', 'purpose': 'any'}]},
                             media_type='application/manifest+json')
 
     @app.get('/phone-icon.svg')
     def icon():
-        svg = ("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='#0b0912'/>"
-               "<text x='8' y='46' font-family='Impact,Arial Black' font-size='38' fill='#ff4ba5'>N</text>"
-               "<path d='M34 40 L52 22 M40 22 H52 V34' stroke='#58e8f7' stroke-width='5' fill='none' stroke-linecap='round'/></svg>")
-        return Response(svg, media_type='image/svg+xml')
+        # Preserve the old icon URL for existing phone bookmarks.
+        return FileResponse(Path(root)/'docs'/'brand'/'fastclipping-logo.png',media_type='image/png')

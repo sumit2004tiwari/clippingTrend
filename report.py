@@ -130,7 +130,7 @@ def environment():
 def diagnostics(note='', errors=8):
     """The exact text the user sees and shares. Redacted again here so nothing slips through."""
     env = environment()
-    lines = ['NeonClipping diagnostics (links, user names, e-mails and IPs removed)', '']
+    lines = ['fastclipping diagnostics (links, user names, e-mails and IPs removed)', '']
     lines += [f'{k}: {redact(v)}' for k, v in env.items()]
     errs = recent_errors(errors)
     lines += ['', f'recent errors ({len(errs)}):']

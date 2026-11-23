@@ -84,7 +84,7 @@ def _install(root, sha):
         names = z.namelist()
         prefix = names[0].split('/')[0] + '/'
         if prefix + 'app.py' not in names:
-            raise RuntimeError('The download does not look like NeonClipping (app.py missing).')
+            raise RuntimeError('The download does not look like fastclipping (app.py missing).')
         _set(stage='Installing files...')
         backup = root / '.update-backup'
         if backup.exists():
@@ -110,7 +110,7 @@ def _install(root, sha):
         if r.returncode:
             raise RuntimeError('Packages could not be installed: ' + (r.stderr or r.stdout)[-300:])
     (root / '.neon_version').write_text(sha, encoding='utf-8')
-    _set(stage='Restarting NeonClipping...', done=True)
+    _set(stage='Restarting fastclipping...', done=True)
 
 
 def restart(root):

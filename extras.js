@@ -1,4 +1,4 @@
-// NeonClipping extras: style panel, caption animation, SRT/ASS import, facecam finder, AI parts.
+// fastclipping extras: style panel, caption animation, SRT/ASS import, facecam finder, AI parts.
 // Loaded after app.js. It only adds to the page and wraps request()/exportSettings()/openSavedClip(); app.js stays as it is.
 (function () {
   const $ = id => document.getElementById(id);
@@ -232,7 +232,7 @@
       try {
         const p = await baseRequest('/phone/status');
         if (!p.enabled) {
-          phoneBox.innerHTML = '📱 <b>Phone access is off.</b> To control live clipping and watch clips on your phone, close NeonClipping and start it with the <b>NeonClipping (phone access)</b> shortcut. Windows may ask once to allow it on private networks: choose Allow.';
+          phoneBox.innerHTML = '📱 <b>Phone access is off.</b> To control live clipping and watch clips on your phone, close fastclipping and start it with the <b>phone access</b> shortcut. Windows may ask once to allow it on private networks: choose Allow.';
         } else {
           const urls = p.urls.length ? p.urls.map(u => '<b>' + u + '</b>').join(' or ') : '(no Wi-Fi address found)';
           phoneBox.innerHTML = '📱 <b>Phone access is on.</b> On a phone connected to the same Wi-Fi open ' + urls + ' and enter the PIN <b style="color:var(--lime);font-size:18px;letter-spacing:.1em">' + p.pin + '</b> <button class="secondary" id="phone-newpin" style="margin-left:8px;padding:4px 10px">New PIN</button>' +
@@ -313,8 +313,150 @@
       if (!picked.length) { aiStatus('Tick at least one moment.'); return; }
       const url = (aiInfo && aiInfo.url) || $('ai-url').value.trim();
       $('url').value = url; window.__aiMoments = picked.map(m => ({ start: m.start, end: m.end, title: m.title, hook: m.hook }));
-      aiStatus('Making ' + picked.length + ' clips… watch the progress in step 01 / Make clips.');
+      aiStatus('Making ' + picked.length + ' clips… watch the progress in Create clips.');
+      showStudioView('editor');
       $('make').scrollIntoView({ behavior: 'smooth' }); $('make').click();
     };
+  }
+})();
+
+// Studio presentation: source tabs, accessible feedback and helpful empty states.
+// The existing import, analysis and export handlers remain the source of truth.
+(() => {
+  const byId = id => document.getElementById(id);
+  const tabs = [byId('source-link-tab'), byId('source-upload-tab')];
+  function selectSource(index, focus = false) {
+    tabs.forEach((tab, i) => {
+      tab.setAttribute('aria-selected', String(i === index));
+      tab.tabIndex = i === index ? 0 : -1;
+      byId(tab.getAttribute('aria-controls')).hidden = i !== index;
+    });
+    if (focus) tabs[index].focus();
+  }
+  tabs.forEach((tab, index) => {
+    tab.addEventListener('click', () => selectSource(index));
+    tab.addEventListener('keydown', event => {
+      if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+      event.preventDefault();
+      selectSource(event.key === 'Home' ? 0 : event.key === 'End' ? 1 : 1 - index, true);
+    });
+  });
+  const file = byId('file'), zone = byId('video-dropzone');
+  const originalUpload = file.onchange;
+  file.onchange = async event => {
+    if (!file.files.length) return;
+    byId('upload-make').disabled = true;
+    zone.querySelector('b').textContent = file.files[0].name;
+    zone.querySelector('small').textContent = 'Importing your video. Keep this window open.';
+    byId('empty-source').hidden = false;
+    byId('source-mode').textContent = 'IMPORTING SOURCE';
+    await originalUpload.call(file, event);
+    zone.querySelector('small').textContent = id
+      ? 'Source ready. Choose your settings, then make your clips.'
+      : 'This video could not be imported. Choose another file to try again.';
+    byId('upload-make').disabled = !id || byId('make').disabled;
+    if (!id) byId('source-mode').textContent = 'NO SOURCE YET';
+  };
+  ['dragenter', 'dragover'].forEach(name => zone.addEventListener(name, event => {
+    event.preventDefault(); zone.classList.add('drag-over');
+  }));
+  ['dragleave', 'drop'].forEach(name => zone.addEventListener(name, event => {
+    event.preventDefault(); zone.classList.remove('drag-over');
+  }));
+  zone.addEventListener('drop', event => {
+    const selected = event.dataTransfer?.files[0];
+    if (!selected) return;
+    if (!(selected.type.startsWith('video/') || /\.(mp4|mov|mkv|webm|avi|m4v|mpeg|mpg)$/i.test(selected.name))) {
+      status('Choose a video file such as MP4, MOV or WebM.'); return;
+    }
+    const transfer = new DataTransfer(); transfer.items.add(selected); file.files = transfer.files;
+    file.dispatchEvent(new Event('change', { bubbles: true }));
+  });
+  // Upload and automatic clipping share the app's existing local import state.
+  const uploadMake = byId('upload-make');
+  uploadMake.disabled = true;
+  uploadMake.addEventListener('click', () => { if (!byId('make').disabled) byId('make').click(); });
+  const makeObserver = new MutationObserver(() => { uploadMake.disabled = !id || byId('make').disabled; });
+  makeObserver.observe(byId('make'), { attributes: true, attributeFilter: ['disabled'] });
+
+  const guide = byId('quick-guide');
+  byId('open-guide').addEventListener('click', () => guide.showModal());
+  byId('close-guide').addEventListener('click', () => guide.close());
+  byId('guide-start').addEventListener('click', () => { guide.close(); showStudioView('editor'); selectSource(0); byId('url').focus(); });
+  guide.addEventListener('click', event => {
+    const bounds = guide.getBoundingClientRect();
+    if (event.target === guide && (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom)) guide.close();
+  });
+
+  // The export status also appears close to the user's current task.
+  const toast = document.createElement('div'); toast.className = 'studio-toast'; toast.hidden = true;
+  toast.setAttribute('role', 'status'); toast.setAttribute('aria-live', 'polite'); toast.setAttribute('aria-atomic', 'true');
+  const message = document.createElement('span');
+  const dismiss = document.createElement('button'); dismiss.type = 'button'; dismiss.textContent = '×'; dismiss.setAttribute('aria-label', 'Dismiss notification');
+  dismiss.onclick = () => { toast.hidden = true; };
+  toast.append(message, dismiss); document.body.append(toast);
+  let toastTimer;
+  new MutationObserver(() => {
+    const text = byId('status').textContent.trim();
+    if (!text || text === 'Add a video to begin.') return;
+    clearTimeout(toastTimer); message.textContent = text; toast.hidden = false;
+    toastTimer = setTimeout(() => { toast.hidden = true; }, 8500);
+  }).observe(byId('status'), { childList: true, subtree: true, characterData: true });
+
+  function sourceChanged() {
+    const hasFrame = byId('empty-source').hidden;
+    byId('preview-placeholder').hidden = hasFrame;
+    if (hasFrame && file.files.length && !byId('url').value) zone.querySelector('small').textContent = 'Source ready. Choose your settings, then make your clips.';
+  }
+  new MutationObserver(sourceChanged).observe(byId('empty-source'), { attributes: true, attributeFilter: ['hidden'] });
+  new MutationObserver(sourceChanged).observe(byId('source-mode'), { childList: true });
+  sourceChanged();
+  const sourceUrl = byId('url');
+  sourceUrl.addEventListener('keydown', event => { if (event.key === 'Enter') { event.preventDefault(); if (!byId('link').disabled) byId('link').click(); } });
+
+  // Selection state is announced for dynamic caption/layout/preset buttons too.
+  const selections = document.querySelectorAll('#layouts,#edit-layouts,.caption-styles,.preset-row,.toolbar');
+  function announceSelections(host) {
+    host.querySelectorAll('button[data-layout],button[data-style],button[data-preset],#cam,#game').forEach(button => {
+      button.setAttribute('aria-pressed', String(button.classList.contains('active') || button.classList.contains('on')));
+    });
+  }
+  selections.forEach(host => {
+    announceSelections(host);
+    new MutationObserver(() => announceSelections(host)).observe(host, { subtree: true, childList: true, attributes: true, attributeFilter: ['class'] });
+  });
+  const library = byId('library');
+  new MutationObserver(() => {
+    const empty = library.querySelector('.empty-library');
+    if (!empty || empty.dataset.enhanced || library.querySelector('.clip-card') || empty.textContent.includes('could not be loaded')) return;
+    empty.dataset.enhanced = 'true';
+    empty.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="m10 8 6 4-6 4z"/></svg><h3>Good moments belong here.</h3><p>Your finished clips will be right here, ready to review, refine and share.</p>';
+    const create = document.createElement('button'); create.type = 'button'; create.className = 'primary'; create.textContent = 'Create your first clip';
+    create.onclick = () => { showStudioView('editor'); selectSource(0); byId('url').focus(); }; empty.append(create);
+  }).observe(library, { childList: true });
+
+  // Older upload controls use a hidden input inside a styled label.
+  document.querySelectorAll('label.upload').forEach(label => {
+    const input = label.querySelector('input[type="file"]');
+    if (!input) return;
+    label.tabIndex = 0; label.setAttribute('role', 'button');
+    label.addEventListener('keydown', event => {
+      if (event.target === label && ['Enter', ' '].includes(event.key)) { event.preventDefault(); input.click(); }
+    });
+  });
+
+  // Keep the workflow rail in sync as the user moves through the editor.
+  if ('IntersectionObserver' in window) {
+    const links = [...document.querySelectorAll('.workflow-nav a')];
+    const observer = new IntersectionObserver(entries => {
+      const visible = entries.filter(entry => entry.isIntersecting).sort((a,b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+      if (!visible) return;
+      links.forEach(link => {
+        const current = link.hash === '#' + visible.target.id;
+        link.classList.toggle('current', current);
+        if (current) link.setAttribute('aria-current', 'step'); else link.removeAttribute('aria-current');
+      });
+    }, { rootMargin: '-10% 0px -55% 0px' });
+    links.forEach(link => { const panel = document.querySelector(link.hash); if (panel) observer.observe(panel); });
   }
 })();

@@ -40,7 +40,7 @@ class PhoneGate(unittest.TestCase):
 
     def test_phone_without_pin_is_refused_but_can_load_the_page(self):
         self.assertEqual(self.phone.get('/m').status_code, 200)
-        self.assertIn('NeonClipping', self.phone.get('/m').text)
+        self.assertIn('fastclipping', self.phone.get('/m').text)
         for p in PHONE_ROUTES + ('/media/abc', '/make/abc'):
             self.assertEqual(self.phone.get(p).status_code, 401, p)
 
@@ -84,8 +84,14 @@ class PhoneGate(unittest.TestCase):
         self.assertIn(self.phone.get('/phone/status').status_code, (401, 403))
 
     def test_manifest_and_icon_are_public(self):
-        self.assertEqual(self.phone.get('/manifest.webmanifest').json()['start_url'], '/m')
-        self.assertEqual(self.phone.get('/phone-icon.svg').status_code, 200)
+        manifest = self.phone.get('/manifest.webmanifest').json()
+        self.assertEqual(manifest['start_url'], '/m')
+        self.assertEqual(manifest['name'], 'fastclipping')
+        image = self.phone.get(manifest['icons'][0]['src'])
+        self.assertEqual(image.status_code, 200)
+        self.assertEqual(image.headers['content-type'], 'image/png')
+        self.assertEqual(image.content, (ROOT/'docs'/'brand'/'fastclipping-logo.png').read_bytes())
+        self.assertEqual(self.phone.get('/phone-icon.svg').content, image.content)
 
     def test_status_lists_wifi_addresses_for_the_pc(self):
         s = self.pc.get('/phone/status').json()

@@ -6,7 +6,6 @@ from pathlib import Path
 here = Path(__file__).parent
 prompt = (here.parent / 'NEONCLIPPING-AGENT-SETUP-PROMPT.txt').read_text(encoding='utf-8').strip()
 css = (here / 'style.css').read_text(encoding='utf-8')
-GH = 'github.com/iamajmeena/neonclipping'
 
 
 _count = [0]
@@ -14,7 +13,7 @@ _count = [0]
 
 def foot(_unused=None):
     _count[0] += 1          # pages are built in order, so this is the page number (the cover has none)
-    return f'<div class="foot"><span>NeonClipping · by Ajay K Meena · ★ Star: {GH}</span><span>{_count[0]}</span></div>'
+    return f'<div class="foot"><span>fastclipping · by Ajay K Meena · Instagram: @iam_sumittiwari</span><span>{_count[0]}</span></div>'
 
 
 def both(en, hi):
@@ -36,10 +35,10 @@ def row(a, en, hi):
 pages = []
 
 pages.append(f'''<section class="page cover"><div class="sun"></div><div class="grid"></div>
-<div class="txt"><div class="kicker">OPEN-SOURCE CLIP ENGINE</div><h1>NEON<br><em>CLIPPING</em></h1>
+<div class="txt"><div class="kicker">OPEN-SOURCE CLIP ENGINE</div><h1>fast<br><em>clipping</em></h1>
 <p>Paste a link. Get captioned 9:16 clips in about two minutes. Free. On your computer.<br><span class="hi">लिंक पेस्ट करो। दो मिनट में कैप्शन वाली 9:16 क्लिप पाओ। फ्री। आपके अपने कंप्यूटर पर।</span></p>
-<p style="margin-top:8mm"><span class="chip">★ Star on GitHub</span><span class="chip ig">Follow @iamajmeena</span></p><p style="font-size:11pt">{GH}</p></div>
-<div class="by">Made by <span>Ajay K Meena</span> · Instagram @iamajmeena · English + हिंदी guide</div></section>''')
+<p style="margin-top:8mm"><span class="chip ig">Follow @iam_sumittiwari</span></p></div>
+<div class="by">Made by <span>Ajay K Meena</span> · Instagram @iam_sumittiwari · English + हिंदी guide</div></section>''')
 
 pages.append(f'''<section class="page"><h2><span class="n">01</span>What you get <span class="hi sub">· आपको क्या मिलता है</span></h2>
 <img class="shot" src="home.jpg" style="width:100%">
@@ -57,7 +56,7 @@ pages.append(f'''<section class="page"><h2><span class="n">02</span>Set up in on
 <div class="steps">
 {step(1, "Open an AI agent that can run commands on your computer: Claude Code, OpenAI Codex, Google Antigravity or Cursor.", "ऐसा AI agent खोलो जो आपके कंप्यूटर पर कमांड चला सके: Claude Code, OpenAI Codex, Google Antigravity या Cursor।")}
 {step(2, "Copy the prompt on the next page and paste it. Press Enter.", "अगले पन्ने का prompt कॉपी करके पेस्ट करो। Enter दबाओ।")}
-{step(3, "Say yes when it asks. It checks your computer, installs what is missing, starts NeonClipping and opens it in Chrome.", "जब पूछे तो yes बोलो। वह आपका कंप्यूटर जाँचेगा, जो कम है वो इंस्टॉल करेगा, NeonClipping चालू करके Chrome में खोल देगा।")}
+{step(3, "Say yes when it asks. It checks your computer, installs what is missing, starts fastclipping and opens it in Chrome.", "जब पूछे तो yes बोलो। वह आपका कंप्यूटर जाँचेगा, जो कम है वो इंस्टॉल करेगा, fastclipping चालू करके Chrome में खोल देगा।")}
 {step(4, "It then explains in simple Hindi how to use it. Done.", "फिर वह आसान हिंदी में बताएगा कि इस्तेमाल कैसे करना है। बस।")}
 </div>
 <div class="tiles small">
@@ -111,12 +110,12 @@ pages.append(f'''<section class="page"><h2><span class="n">06</span>Tips and fix
 <tr><td>Twitch / MP4 is slower</td><td>Speech must be recognised on your PC. Ask for fewer clips. <span class="hi">आपके PC पर आवाज़ पहचानी जाती है; कम क्लिप माँगो।</span></td></tr>
 <tr><td>Link fails</td><td>Use the original MP4 with Upload video. <span class="hi">ओरिजिनल MP4 Upload video से डालो।</span></td></tr>
 <tr><td>Can't set it up</td><td>Paste the prompt into an AI agent again and tell it the error. <span class="hi">Prompt दोबारा AI agent को दो और एरर बताओ।</span></td></tr></table>
-<div class="cta"><h3>Liked it? Please star it ★ / पसंद आया? स्टार ज़रूर करें ★</h3>
-<p><b>Every star tells me this is useful and helps me keep making NeonClipping better. <span class="hi">हर स्टार मुझे बताता है कि यह काम का है और इसे आगे बेहतर बनाने में मदद करता है।</span></b><br><br>
-★ <a href="https://github.com/iamajmeena/neonclipping">{GH}</a><br>♥ Optional support (UPI / cards): <a href="https://rzp.io/rzp/JN41CpW">rzp.io/rzp/JN41CpW</a><br>📷 Instagram: <a href="https://www.instagram.com/iamajmeena/">@iamajmeena</a> · Made by <b>Ajay K Meena</b></p></div>
+<div class="cta"><h3>Follow for updates / नए अपडेट के लिए फ़ॉलो करें</h3>
+<p><b>Follow our Instagram for updates, tips and new features. <span class="hi">नए अपडेट, सुझाव और सुविधाओं के लिए Instagram पर फ़ॉलो करें।</span></b><br><br>
+♥ Optional support (UPI / cards): <a href="https://rzp.io/rzp/clipping">rzp.io/rzp/clipping</a><br>📷 Instagram: <a href="https://www.instagram.com/iam_sumittiwari/">@iam_sumittiwari</a> · Made by <b>Ajay K Meena</b></p></div>
 {foot("6")}</section>''')
 
-doc = ('<!doctype html>\n<html lang="en"><head><meta charset="utf-8"><title>NeonClipping Guide · English + हिंदी</title>\n'
+doc = ('<!doctype html>\n<html lang="en"><head><meta charset="utf-8"><title>fastclipping Guide · English + हिंदी</title>\n'
        f'<style>{css}</style></head><body>\n' + '\n'.join(pages) + '\n</body></html>')
 (here / 'guide.html').write_text(doc, encoding='utf-8')
 print('pages', len(pages), 'bytes', len(doc))

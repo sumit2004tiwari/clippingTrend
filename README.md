@@ -1,20 +1,19 @@
-# NeonClipping
+# fastclipping
 
 **Paste a link. Get captioned 9:16 clips in about two minutes. Free, local, open-source.**
 
-NeonClipping turns long YouTube / Twitch / Kick videos (or your own MP4) into vertical, captioned clips with a title and hook for each. Everything runs on your machine: no account, no subscription, no upload.
+fastclipping turns long YouTube / Twitch / Kick videos (or your own MP4) into vertical, captioned clips with a title and hook for each. Everything runs on your machine: no account, no subscription, no upload.
 
-[![Star on GitHub](https://img.shields.io/github/stars/iamajmeena/neonclipping?style=for-the-badge&logo=github&label=Star%20on%20GitHub)](https://github.com/iamajmeena/neonclipping) [![Instagram](https://img.shields.io/badge/Follow-%40iamajmeena-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://www.instagram.com/iamajmeena/)
+[Follow @iam_sumittiwari on Instagram](https://www.instagram.com/iam_sumittiwari/)
 
-🌐 **Website with one-click Windows setup:** <https://iamajmeena.github.io/neonclipping/>
 
-**Made by [Ajay K Meena](https://www.instagram.com/iamajmeena/)** (Director, DOP, colorist, DaVinci Resolve educator, Jaipur). If NeonClipping saves you time, please ⭐ star the repo and follow [@iamajmeena](https://www.instagram.com/iamajmeena/) on Instagram.
+**Made by Ajay K Meena** (Director, DOP, colorist, DaVinci Resolve educator, Jaipur). If fastclipping saves you time, follow [@iam_sumittiwari](https://www.instagram.com/iam_sumittiwari/) on Instagram.
 
 **Clip an 85-minute stream in 97 seconds, 100% locally, with zero API cost.** (measured, see [How it finds good moments](#how-it-finds-good-moments))
 
-### NeonClipping compared with other clippers
+### fastclipping compared with other clippers
 
-| | **NeonClipping** | OpusClip (cloud) | Docker-based self-hosted clippers (SupoClip, OpenShorts, Reelsaw) |
+| | **fastclipping** | OpusClip (cloud) | Docker-based self-hosted clippers (SupoClip, OpenShorts, Reelsaw) |
 |---|---|---|---|
 | Where it runs | Your PC, nothing uploaded | Their servers | Your machine or server |
 | Cost | Free, no account, no credits | Subscription / credits | Free (some need an LLM API key or Docker setup) |
@@ -109,7 +108,7 @@ Run the portable regression tests with `python -m unittest discover -s tests -v`
 
 ## Install
 
-**Easiest (Windows):** download [`NeonClipping-Setup.bat`](https://github.com/iamajmeena/neonclipping/releases/latest/download/NeonClipping-Setup.bat) from the [website](https://iamajmeena.github.io/neonclipping/) or the Releases page and double-click it. It checks your PC, installs Python and FFmpeg if missing, installs NeonClipping into `%LOCALAPPDATA%\NeonClipping`, creates a Desktop shortcut and opens the app. Mac/Linux: `install.sh` (new, not yet tested on a real Mac). Or follow the steps below.
+**Easiest (Windows):** download [`NeonClipping-Setup.bat`](https://github.com/iamajmeena/neonclipping/releases/latest/download/NeonClipping-Setup.bat) and double-click it. It checks your PC, installs Python and FFmpeg if missing, installs fastclipping into `%LOCALAPPDATA%\NeonClipping`, creates a Desktop shortcut and opens the app. Mac/Linux: `install.sh` (new, not yet tested on a real Mac). Or follow the steps below.
 
 Requirements: Python 3.10 to 3.13 (the newest Python often has no wheels for the speech/vision packages yet; the Mac/Linux installer picks a supported one for you), FFmpeg on PATH. Optional but recommended: [Ollama](https://ollama.com) with `ollama pull llama3.2:3b` for AI titles, hooks and scores (without it clips are picked by the audio/motion score), and an NVIDIA GPU for NVENC and faster-whisper.
 
@@ -150,16 +149,16 @@ Set `NEONCLIPPING_CPU=1` to force CPU. Set `NEONCLIPPING_PORT=9000` to use anoth
 
 ## Live clipping (while the stream is on)
 
-Paste a Twitch channel link or a YouTube Live link into the **Live clipping** panel and press Start. NeonClipping records the stream (Streamlink), reads chat anonymously, counts messages in 10 s buckets and cuts a clip around every chat spike (chat velocity more than 2.5 sigma and 2.5x the 5-minute baseline). The clip starts about 24 s *before* the spike, because chat reacts after the moment. It then gets captions, a hook and title, your layout and facecam boxes, and a viral score like any other clip. **Clip the last 30 s now** cuts on demand, **Stop** ends the session. It only works while the stream is live; for finished videos use Make clips.
+Paste a Twitch channel link or a YouTube Live link into the **Live clipping** panel and press Start. fastclipping records the stream (Streamlink), reads chat anonymously, counts messages in 10 s buckets and cuts a clip around every chat spike (chat velocity more than 2.5 sigma and 2.5x the 5-minute baseline). The clip starts about 24 s *before* the spike, because chat reacts after the moment. It then gets captions, a hook and title, your layout and facecam boxes, and a viral score like any other clip. **Clip the last 30 s now** cuts on demand, **Stop** ends the session. It only works while the stream is live; for finished videos use Make clips.
 
 There is also a command-line version in `live/live_clip.py`.
 
 ## Creators (clip a streamer automatically)
 
-Add a Twitch name or a Twitch / YouTube channel link in the **Creators** panel. NeonClipping checks every minute; when that creator goes live it records the stream and clips the chat spikes, using the layout, facecam boxes and caption style you had selected when you added them (“Use my current layout” updates it). Clips appear under the creator and in My clips.
+Add a Twitch name or a Twitch / YouTube channel link in the **Creators** panel. fastclipping checks every minute; when that creator goes live it records the stream and clips the chat spikes, using the layout, facecam boxes and caption style you had selected when you added them (“Use my current layout” updates it). Clips appear under the creator and in My clips.
 
 - One stream at a time (recording and rendering are heavy); other creators wait their turn.
-- NeonClipping must stay open. Unattended recordings stop after 3 hours (a new one starts if the creator is still live), stop when less than 8 GB of disk is free, and the big recording file is deleted after the last clip is cut.
+- fastclipping must stay open. Unattended recordings stop after 3 hours (a new one starts if the creator is still live), stop when less than 8 GB of disk is free, and the big recording file is deleted after the last clip is cut.
 - Pressing **Stop** pauses that creator for 30 minutes; switching Auto off and on resumes at once.
 - Tested on Twitch (recording, chat spikes, clip, feed). YouTube channels are detected through yt-dlp; an auto-clipped YouTube stream was not run end to end.
 
@@ -184,8 +183,8 @@ Inspired by a mobile live-clipper shown in a creator's reel (that app is unrelea
 - **Clip length presets** 10 s / 20 s / 30 s / Auto: the clip starts a few seconds before the chat peak; "Clip now" cuts the same length from the live recording.
 - **Hook text** for live clips from the AI, the **stream title** (emoji removed) or your own text; **captions switch** (off = faster clips).
 - Live clips now also get the style options (template, logo, credit, outro, music, caption animation).
-- **Phone remote:** start NeonClipping with the *NeonClipping (phone access)* shortcut (`Start-NeonClipping-Phone.bat`, or set `NEONCLIPPING_LAN=1`). Under Live clipping it shows a Wi-Fi address and a 6-digit PIN. On a phone on the same Wi-Fi open that address (`/m`), enter the PIN, paste a YouTube Live or Twitch link, pick a length, watch the hype meter, press **Clip now**, and play / save / share the clips. On Android Chrome use "Add to Home screen" to get an app icon. The PC does all the work; the phone is only a remote.
-- **Safety:** phone access is off unless you start it that way (the server then listens on 127.0.0.1 only). Everything that is not the PC needs the PIN (after 5 wrong tries an address is locked for 10 minutes; "New PIN" logs every phone out). Even with the PIN a phone can only use the live, library, make, clips, feedback and creators routes: uploads, file tools, the queue and the PIN itself stay PC-only. Windows will ask once whether to allow NeonClipping on private networks: choose Allow for home Wi-Fi only.
+- **Phone remote:** start fastclipping with the *fastclipping (phone access)* shortcut (`Start-NeonClipping-Phone.bat`, or set `NEONCLIPPING_LAN=1`). Under Live clipping it shows a Wi-Fi address and a 6-digit PIN. On a phone on the same Wi-Fi open that address (`/m`), enter the PIN, paste a YouTube Live or Twitch link, pick a length, watch the hype meter, press **Clip now**, and play / save / share the clips. On Android Chrome use "Add to Home screen" to get an app icon. The PC does all the work; the phone is only a remote.
+- **Safety:** phone access is off unless you start it that way (the server then listens on 127.0.0.1 only). Everything that is not the PC needs the PIN (after 5 wrong tries an address is locked for 10 minutes; "New PIN" logs every phone out). Even with the PIN a phone can only use the live, library, make, clips, feedback and creators routes: uploads, file tools, the queue and the PIN itself stay PC-only. Windows will ask once whether to allow fastclipping on private networks: choose Allow for home Wi-Fi only.
 - Not included: a native Android app (the phone page is a web page that works like one), live clipping that runs on the phone itself.
 
 ## Captions: YouTube's own, always
@@ -208,7 +207,7 @@ The **Find my facecam** chip (or "find it automatically when I press Make clips"
 
 ## Long streams with a free chatbot
 
-**AI parts** (below step 01): paste a YouTube link, NeonClipping splits the video's captions into ~25-minute parts and gives a copy-ready prompt per part. Paste each into any free chatbot, paste all answers back (JSON or lines like `12:30-13:10 title`), tick the moments and press Make clips: only those sections are downloaded and rendered. A chatbot given a 9-hour transcript in one go only reads the start; small parts fix that. Nothing is sent anywhere by NeonClipping; the chatbot step is manual.
+**AI parts** (below step 01): paste a YouTube link, fastclipping splits the video's captions into ~25-minute parts and gives a copy-ready prompt per part. Paste each into any free chatbot, paste all answers back (JSON or lines like `12:30-13:10 title`), tick the moments and press Make clips: only those sections are downloaded and rendered. A chatbot given a 9-hour transcript in one go only reads the start; small parts fix that. Nothing is sent anywhere by fastclipping; the chatbot step is manual.
 
 ## Report a problem (English + Hindi)
 
@@ -239,7 +238,7 @@ If a video only exists at 720p on YouTube (some new uploads and low-quality sour
 
 ## "Sign in to confirm you're not a bot" (YouTube bot check)
 
-Some connections get this from YouTube: shared or mobile-data internet, VPNs, office/hostel Wi-Fi, or an old downloader. NeonClipping handles it for you in this order, with no setup:
+Some connections get this from YouTube: shared or mobile-data internet, VPNs, office/hostel Wi-Fi, or an old downloader. fastclipping handles it for you in this order, with no setup:
 
 1. **Keeps yt-dlp fresh.** Once a day at start-up it upgrades `yt-dlp[default]` (offline-safe). Turn off with `NEONCLIPPING_NO_AUTOUPDATE=1`.
 2. **Retries in other YouTube modes** (TV, Safari, iOS, mobile web clients) instead of failing on the first block.
@@ -250,11 +249,11 @@ If YouTube still blocks you, pick one:
 | Fix | How |
 |---|---|
 | **Upload the MP4** | Use **Upload video** next to the link box. Always works. |
-| **Use your browser login** | Sign in to YouTube in Chrome (or Edge / Firefox / Brave), then start NeonClipping with `NEONCLIPPING_COOKIES_BROWSER=chrome`. PowerShell: `$env:NEONCLIPPING_COOKIES_BROWSER='chrome'; ./run.ps1`. Close the browser first if Windows says the cookie file is locked. |
+| **Use your browser login** | Sign in to YouTube in Chrome (or Edge / Firefox / Brave), then start fastclipping with `NEONCLIPPING_COOKIES_BROWSER=chrome`. PowerShell: `$env:NEONCLIPPING_COOKIES_BROWSER='chrome'; ./run.ps1`. Close the browser first if Windows says the cookie file is locked. |
 | **Use a cookies file** | Export `cookies.txt` from your browser and save it as `data/youtube_cookies.txt` (or point `NEONCLIPPING_COOKIES_FILE` at it). It stays on your computer. |
 | **Change network** | Home Wi-Fi instead of mobile data; turn the VPN off. |
 
-Cookies are only read when you set one of the options above; NeonClipping never reads your browser by itself. Use a throw-away Google account if you do not want your main one attached to automated downloads. Python 3.10 is deprecated by yt-dlp: use Python 3.11+ so updates keep arriving. Everything YouTube-related goes through [`ytdl.py`](ytdl.py).
+Cookies are only read when you set one of the options above; fastclipping never reads your browser by itself. Use a throw-away Google account if you do not want your main one attached to automated downloads. Python 3.10 is deprecated by yt-dlp: use Python 3.11+ so updates keep arriving. Everything YouTube-related goes through [`ytdl.py`](ytdl.py).
 
 ## Honest limits
 
@@ -265,17 +264,17 @@ Cookies are only read when you set one of the options above; NeonClipping never 
 - Auto-caption accuracy follows the source: YouTube's auto captions are imperfect, especially Hinglish.
 - Deep mode was verified on a short video only; on multi-hour videos it downloads the whole file first and is slow by design.
 - **Live clipping:** one live session at a time, and the computer must stay awake and online while it records. Unattended creator-watch sessions stop after 3 hours or when less than 8 GB of disk is free (both configurable above); a manual session does not.
-- **No auto-posting or scheduling.** NeonClipping exports the MP4 and SRT to your computer and stops there on purpose: posting to Instagram/YouTube/TikTok needs your accounts and approved API access, which would break "no account, nothing leaves your computer". Upload with the platform's own app or a scheduler you trust.
+- **No auto-posting or scheduling.** fastclipping exports the MP4 and SRT to your computer and stops there on purpose: posting to Instagram/YouTube/TikTok needs your accounts and approved API access, which would break "no account, nothing leaves your computer". Upload with the platform's own app or a scheduler you trust.
 - **Caption languages:** Hinglish, Hindi, English and 50 more (Whisper). Accuracy is best for widely spoken languages. Captions are drawn with fonts installed on your computer, so scripts without a font may show empty boxes, and right-to-left languages (Arabic, Persian, Hebrew, Urdu) have basic support only. When YouTube provides captions in the spoken language they are used instead of the speech model.
 - Facecam presets are starting points, not detection: if you pick Bottom-right but the cam is bottom-left, the top half of the clip will show the wrong area. Pick the right corner or draw your own boxes.
 
 ## Support
 
-NeonClipping is free. If it saves you time you can ⭐ star the repo, follow [@iamajmeena](https://www.instagram.com/iamajmeena/), or optionally donate via Razorpay (UPI / cards): <https://rzp.io/rzp/JN41CpW>. The app also has a ♥ Donate button. Nothing is ever locked behind a donation.
+fastclipping is free. If it saves you time you can follow [@iam_sumittiwari](https://www.instagram.com/iam_sumittiwari/), or optionally donate via Razorpay (UPI / cards): <https://rzp.io/rzp/clipping>. The app also has a ♥ Donate button. Nothing is ever locked behind a donation.
 
 ## Credits and inspiration
 
-Design ideas studied from open-source clippers: [PeakCut](https://github.com/haziqahmedqasmi/PeakCut) (audio-first download, captions as transcript, section download), [ClipCutter](https://github.com/curtyo18/ClipCutter), [content-ai](https://github.com/buddah0/content-ai), and the Growlance live-clipper script. Also studied: PeakCut's facecam-by-static-border idea and creator list (reimplemented here with our own code, plus a face check), the public feature list of the YIZERGE desktop editor (templates, background card, music riser, caption animations; only its public web page was read), and a creator's walkthrough of splitting a 9-hour stream into small transcript parts for a free chatbot. Built on FFmpeg, yt-dlp, FastAPI, faster-whisper, OpenCV (YuNet face detector, MIT), Ollama.
+Design ideas studied from open-source clippers: PeakCut (audio-first download, captions as transcript, section download), ClipCutter, content-ai, and the Growlance live-clipper script. Also studied: PeakCut's facecam-by-static-border idea and creator list (reimplemented here with our own code, plus a face check), the public feature list of the YIZERGE desktop editor (templates, background card, music riser, caption animations; only its public web page was read), and a creator's walkthrough of splitting a 9-hour stream into small transcript parts for a free chatbot. Built on FFmpeg, yt-dlp, FastAPI, faster-whisper, OpenCV (YuNet face detector, MIT), Ollama.
 
 ## License
 
@@ -292,7 +291,7 @@ MIT. See [LICENSE](LICENSE).
 
 ## Updating
 
-NeonClipping now updates itself. When a new version is on GitHub, a green banner appears at the top of the page; press **Update now**, or leave it and it updates automatically after a short countdown when nothing is running. Your clips, settings and downloaded models are kept, one backup of the replaced files stays in `.update-backup/`, and the app restarts by itself.
+fastclipping now updates itself. When a new version is on GitHub, a green banner appears at the top of the page; press **Update now**, or leave it and it updates automatically after a short countdown when nothing is running. Your clips, settings and downloaded models are kept, one backup of the replaced files stays in `.update-backup/`, and the app restarts by itself.
 
 If you installed an older version, run `NeonClipping-Setup.bat` once more to get this feature. After that no re-install is needed. A git checkout is never touched by the updater (use `git pull`).
 
